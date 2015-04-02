@@ -24,7 +24,9 @@ import com.randroid.btmessenger.bluetooth.BluetoothUtilities;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class FindBluetoothlistActivity extends ActionBarActivity {
 
@@ -37,6 +39,7 @@ public class FindBluetoothlistActivity extends ActionBarActivity {
     private final static int REQUEST_ENABLE_BT = 1;
     private BluetoothAdapter mBluetoothAdapter;
     private List<HashMap<String, String>> fillMaps;
+    private Set<String> setBlueDevices = new HashSet<String>();
     @Override
     protected void onStop() {
         super.onStop();
@@ -91,54 +94,47 @@ public class FindBluetoothlistActivity extends ActionBarActivity {
             @Override
             public void onClick(View v) {
                 if(mBluetoothAdapter != null){
-                    number = 0;
-                    mDeviceName = "";
-                    mDeviceMacAddress = "";
-                    mBluetoothAdapter.cancelDiscovery();
-                    fillMaps.clear();
-                    adapter.notifyDataSetChanged();
-                    mBluetoothAdapter.startDiscovery();
+                    discoverAllAvailableBluetoothDevices();
                 }
             }
         });
         btnUnPair = (Button)this.findViewById(R.id.btnUnPair);
-        btnUnPair.setOnClickListener(new View.OnClickListener(){
+        btnUnPair.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(null == mDeviceName || "".equals(mDeviceName)){
+                if (null == mDeviceName || "".equals(mDeviceName)) {
                     Toast.makeText(FindBluetoothlistActivity.this, "No Bluetooth device was selected.", Toast.LENGTH_SHORT).show();
-                }else if(null == mDeviceMacAddress || "".equals(mDeviceMacAddress)){
+                } else if (null == mDeviceMacAddress || "".equals(mDeviceMacAddress)) {
                     Toast.makeText(FindBluetoothlistActivity.this, "No Bluetooth device was selected.", Toast.LENGTH_SHORT).show();
-                }else{
+                } else {
                     BluetoothDevice device = mBluetoothAdapter.getRemoteDevice(mDeviceMacAddress);
-                    try{
-                        if(BluetoothUtilities.unPair(device)){
+                    try {
+                        if (BluetoothUtilities.unPair(device)) {
                             Toast.makeText(FindBluetoothlistActivity.this, "UnPair device successfully.", Toast.LENGTH_SHORT).show();
-                        }else{
+                        } else {
                             Toast.makeText(FindBluetoothlistActivity.this, "UnPair device failed.", Toast.LENGTH_SHORT).show();
                         }
-                    }catch (Exception ex){}
+                    } catch (Exception ex) {
+                    }
                 }
             }
         });
-        lstBluetoothDevices.setOnItemClickListener(new AdapterView.OnItemClickListener()
-        {
+        lstBluetoothDevices.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
-            public void onItemClick(AdapterView<?> arg0, View arg1,int position, long arg3)
-            {
-                TextView txtDeviceName = (TextView)arg1.findViewById(R.id.dName);
+            public void onItemClick(AdapterView<?> arg0, View arg1, int position, long arg3) {
+                TextView txtDeviceName = (TextView) arg1.findViewById(R.id.dName);
                 mDeviceName = txtDeviceName.getText().toString();
-                TextView txtDeviceMacAddress = (TextView)arg1.findViewById(R.id.dMacAddress);
+                TextView txtDeviceMacAddress = (TextView) arg1.findViewById(R.id.dMacAddress);
                 mDeviceMacAddress = txtDeviceMacAddress.getText().toString();
-                Toast.makeText(FindBluetoothlistActivity.this, mDeviceName + " | " + mDeviceMacAddress + " | "+position, Toast.LENGTH_SHORT).show();
+                Toast.makeText(FindBluetoothlistActivity.this, mDeviceName + " | " + mDeviceMacAddress + " | " + position, Toast.LENGTH_SHORT).show();
             }
         });
+        discoverAllAvailableBluetoothDevices();
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        discoverAllAvailableBluetoothDevices();
     }
 
 
@@ -174,16 +170,14 @@ public class FindBluetoothlistActivity extends ActionBarActivity {
             Intent enableBtIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
             startActivityForResult(enableBtIntent, REQUEST_ENABLE_BT);
         }
+        number = 0;
+        mDeviceName = "";
+        mDeviceMacAddress = "";
+        mBluetoothAdapter.cancelDiscovery();
+        fillMaps.clear();
+        setBlueDevices.clear();
+        adapter.notifyDataSetChanged();
         mBluetoothAdapter.startDiscovery();
-        /*Set<BluetoothDevice> pairedDevices = mBluetoothAdapter.getBondedDevices();
-        if (pairedDevices.size() > 0) {
-            // Loop through paired devices
-            for (BluetoothDevice device : pairedDevices) {
-                // Add the name and address to an array adapter to show in a ListView
-                //mArrayAdapter.add(device.getName() + "\n" + device.getAddress());
-                tvTitle.append("\r\n" + device.getName() + "\n" + device.getAddress());
-            }
-        }*/
     }
     private final BroadcastReceiver mReceiver = new BroadcastReceiver() {
         public void onReceive(Context context, Intent intent) {
@@ -197,14 +191,19 @@ public class FindBluetoothlistActivity extends ActionBarActivity {
                 if(null == deviceName || "".equals(deviceName)){
                     deviceName = "Unknown";
                 }
-                number ++;
-                //tvTitle.append("\r\n" + "* " + deviceName + ", " + device.getAddress());
-                HashMap<String, String> map = new HashMap<String, String>();
-                map.put("deviceId", "" + number);
-                map.put("deviceName", deviceName);
-                map.put("deviceMacAddress", device.getAddress());
-                fillMaps.add(map);
-                adapter.notifyDataSetChanged();
+                String address = device.getAddress();
+                if(!setBlueDevices.contains(address)){
+                    number ++;
+                    //tvTitle.append("\r\n" + "* " + deviceName + ", " + device.getAddress());
+                    HashMap<String, String> map = new HashMap<String, String>();
+                    map.put("deviceId", "" + number);
+                    map.put("deviceName", deviceName);
+                    map.put("deviceMacAddress", address);
+                    fillMaps.add(map);
+                    adapter.notifyDataSetChanged();
+                    setBlueDevices.add(address);
+                }
+
             }
             else if(BluetoothDevice.ACTION_BOND_STATE_CHANGED.equals(action)){
                 BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
