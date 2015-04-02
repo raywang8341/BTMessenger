@@ -1,0 +1,11 @@
+<resources>
+    <string name="app_name">Bluetooth Messenger</string>
+
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+    <string name="title_activity_index">Choose Role</string>
+    <string name="client_activity">Run As a Client</string>
+    <string name="server_activity">Run As a Server</string>
+    <string name="list_bluetooth_devices_activity">List all bluetooth devices.</string>
+
+</resources>

@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout android:id="@+id/main"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_height="fill_parent"
+    android:layout_width="fill_parent">
+    <!-- Header -->
+    <LinearLayout android:id="@+id/header"
+        android:background="#ff347c12"
+        android:layout_height="wrap_content"
+        android:layout_width="fill_parent"
+        >
+        <TextView android:id="@+id/txtId"
+            android:layout_height="fill_parent"
+            android:layout_width="wrap_content"
+            android:text="#"
+            android:textColor="#ffffff"
+            android:gravity="center_vertical"
+            android:width="20dip"
+            android:height="30dip"
+            />
+        <TextView android:id="@+id/txtName"
+            android:layout_height="fill_parent"
+            android:layout_width="wrap_content"
+            android:text="Device Name"
+            android:textColor="#ffffff"
+            android:gravity="center_vertical"
+            android:width="100dip"
+            android:height="30dip"
+            />
+        <TextView android:id="@+id/txtMacAddress"
+            android:layout_height="fill_parent"
+            android:layout_width="fill_parent"
+            android:textColor="#ffffff"
+            android:text="Device MacAddress"
+            android:gravity="center_vertical"
+            android:width="100dip"
+            android:height="30dip"
+            />
+    </LinearLayout>
+
+    <!-- List Divider -->
+    <View android:layout_width="fill_parent"
+        android:layout_height="1dip"
+        android:background="?android:attr/listDivider" />
+
+    <!-- ListView (grid_items) -->
+    <LinearLayout android:id="@+id/layout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+        <ListView android:id="@+id/lstBluetoothDevies"
+            android:choiceMode="singleChoice"
+            android:listSelector="@android:color/darker_gray"
+            android:layout_height="wrap_content"
+            android:layout_width="fill_parent">
+        </ListView>
+
+    </LinearLayout>
+    <LinearLayout android:id="@+id/layoutButton"
+        android:orientation="horizontal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+        <Button
+            android:layout_width="120dp"
+            android:layout_height="30dp"
+            android:text="Rescan Device"
+            android:background="@drawable/buttonborder"
+            android:id="@+id/Rescan" />
+        <Button
+            android:layout_width="120dp"
+            android:layout_height="30dp"
+            android:text="Connect Device"
+            android:background="@drawable/buttonborder"
+            android:id="@+id/btnConnect" />
+        <Button
+            android:layout_width="120dp"
+            android:layout_height="30dp"
+            android:text="UnPair Device"
+            android:background="@drawable/buttonborder"
+            android:id="@+id/btnUnPair" />
+
+    </LinearLayout>
+
+</LinearLayout>

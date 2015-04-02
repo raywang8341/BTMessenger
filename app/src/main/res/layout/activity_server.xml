@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout android:id="@+id/main"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_height="fill_parent"
+    android:background="#D3D3D3"
+    android:layout_width="fill_parent">
+    <RelativeLayout android:id="@+id/sendMessage"
+        android:background="@drawable/sendmessageborder"
+        android:layout_height="60dp"
+        android:layout_width="fill_parent"
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="5dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:paddingLeft="5dp"
+        android:paddingRight="5dp"
+        android:layout_alignParentBottom="true"
+        android:gravity="center"
+        android:orientation="horizontal">
+        <Button
+            android:id="@+id/btnSend"
+            android:layout_width="120dp"
+            android:layout_alignParentRight="true"
+            android:background="@drawable/buttonborder"
+            android:text="Send"
+            android:layout_height="40dp" />
+        <com.randroid.btmessenger.MyEditText
+            android:id="@+id/txtMessage"
+            android:layout_alignParentStart="true"
+            android:layout_toLeftOf="@+id/btnSend"
+            android:layout_height="40dp"
+            android:singleLine="true"
+            android:layout_width="fill_parent"
+            android:textColor="#F8F8FF"
+            android:gravity="center_vertical"/>
+    </RelativeLayout>
+    <RelativeLayout android:id="@+id/messageContent"
+        android:background="@drawable/border"
+        android:layout_height="fill_parent"
+        android:layout_width="fill_parent"
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginBottom="80dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignTop="@id/sendMessage"
+        >
+        <TextView android:id="@+id/txtMessageHistory"
+            android:layout_height="fill_parent"
+            android:layout_width="fill_parent"
+            android:gravity="top"
+            android:width="20dip"
+            android:height="30dip"
+            android:scrollbars="vertical"
+            />
+    </RelativeLayout>
+</RelativeLayout>
